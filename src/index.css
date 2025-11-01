@@ -1,0 +1,161 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------------------------------------------------------------------------------- */
+/* GLOBAL STYLES */
+/* ---------------------------------------------------------------------------------- */
+
+body {
+  /* Font Family is good, keeping it */
+  font-family: 'Poppins', sans-serif; 
+  background-color: #f8fafc; /* Tailwind: bg-slate-50 */
+  scroll-behavior: smooth;
+  overflow-x: hidden; /* Horizontal scroll fix for mobile view */
+}
+
+/* ---------------------------------------------------------------------------------- */
+/* CUSTOM UTILITIES & ANIMATIONS */
+/* ---------------------------------------------------------------------------------- */
+
+/* 1. Product Card Hover Effect (Enhanced) */
+.card-hover {
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.card-hover:hover {
+  transform: translateY(-10px); /* Increased lift */
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25); /* Stronger shadow on hover */
+}
+
+/* 2. Custom Scrollbar Hiding (For Horizontal Product ScrollList) */
+.hide-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
+
+
+/* 3. Hero Welcome Message Animation (Fade In) */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fadeIn {
+  animation: fadeIn 1.5s ease-out;
+}
+
+/* 4. Dropdown Fade-in Animation (Used in Navbar.tsx) */
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in-down {
+  animation: fadeInDown 0.3s ease-out forwards;
+}
+
+/* 5. Slow Pulse for Logo (Optional cool effect) */
+@keyframes pulse-slow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+.animate-pulse-slow {
+  animation: pulse-slow 5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+
+/* --- EXTRA ANIMATIONS ADDED --- */
+
+/* 6. Section Scroll-In Effect (To use, add class: animate-slideUp to a section's div) */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(50px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-slideUp {
+  /* Base animation: will run once on load. You can adjust duration/delay if needed. */
+  animation: slideUp 0.8s ease-out; 
+}
+
+
+/* 7. Subtle Border Glow (For highlighting focus items, e.g., product image border) */
+@keyframes borderGlow {
+  0% { box-shadow: 0 0 0px rgba(245, 158, 11, 0.0); } /* yellow-500 */
+  50% { box-shadow: 0 0 10px rgba(245, 158, 11, 0.7); }
+  100% { box-shadow: 0 0 0px rgba(245, 158, 11, 0.0); }
+}
+.animate-glow-border {
+  animation: borderGlow 3s infinite alternate;
+}
+
+
+/* 8. Text Shadow (Better readability on video) */
+.text-shadow-lg {
+  text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
+}
+.text-shadow-md {
+  text-shadow: 1px 1px 5px rgba(0,0,0,0.6);
+}
+
+
+/* 9. Custom Gradient Button Style (For reference, if needed) */
+.btn-vibrant-gradient {
+  /* Neon Blue to Vibrant Orange */
+  background: linear-gradient(90deg, #3b82f6 0%, #f97316 100%);
+  color: #fff;
+  border: none;
+  transition: all 0.3s ease;
+}
+.btn-vibrant-gradient:hover {
+  background: linear-gradient(90deg, #f97316 0%, #3b82f6 100%);
+  transform: scale(1.05); /* Added scale to match hover effect */
+}
+
+/* Video Cards */
+/* File: src/index.css (Verify these exist from previous steps) */
+
+/* 1. Scrollbar Hiding (Essential for clean carousel) */
+.hide-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
+
+/* 2. Text Shadow (For readability on video overlay) */
+.text-shadow-md {
+  text-shadow: 1px 1px 5px rgba(0,0,0,0.6);
+}
+
+/* 3. Slow Pulse for Live Demo/Play Icon */
+@keyframes pulse-slow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+.animate-pulse-slow {
+  animation: pulse-slow 5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Skeleton */
+
+/* File: src/index.css (Add these new styles) */
+
+/* Scroll Reveal Base State (Hidden) */
+.scroll-reveal-item {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  /* Add initial animation delay properties if needed */
+}
+
+/* Scroll Reveal Visible State */
+.scroll-reveal-item.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Optional: Add staggered delay (Requires slight manual application/logic) */
+/* .scroll-reveal-item:nth-child(2) { transition-delay: 0.1s; } */
+/* .scroll-reveal-item:nth-child(3) { transition-delay: 0.2s; } */
