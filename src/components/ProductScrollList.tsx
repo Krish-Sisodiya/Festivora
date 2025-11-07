@@ -1,7 +1,7 @@
 // File: src/components/ProductScrollList.tsx (FIXED: Card Visibility)
 
 import React, { useState, useEffect } from 'react'; // Added useEffect import
-import type { Product } from "../types";
+import type { Product } from "../types/index";
 import ProductCard from "./ProductCard";
 import SkeletonCard from "./SkeletonCard";
 

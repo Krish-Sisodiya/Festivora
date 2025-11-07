@@ -1,7 +1,7 @@
 // File: src/components/ProductCard.tsx (PROFESSIONAL LAYOUT with WORKING SHARE)
 
 import React, { useState, useEffect } from 'react';
-import { Share2, Eye, MessageCircle } from 'lucide-react'; // Changed Heart to MessageCircle for WhatsApp
+import { Eye, MessageCircle } from 'lucide-react'; // Changed Heart to MessageCircle for WhatsApp
 import type { Product } from '../types/index';
 
 // Props Interface

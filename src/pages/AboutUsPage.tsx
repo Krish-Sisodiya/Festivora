@@ -1,11 +1,11 @@
-// File: src/pages/AboutUsPage.tsx (About Us Page with Animations)
+// File: src/pages/AboutUsPage.tsx (Updated — Error Free)
 
 import React from 'react';
 import { Home, Zap, Star, Users, Briefcase, ChevronRight } from 'lucide-react';
 
 // AboutUsPage Props Interface
 interface AboutUsPageProps {
-    onGoHome: () => void; // Function to go back to the home page
+    onGoHome: () => void;
 }
 
 // --- MOCK DATA for Sections ---
@@ -27,7 +27,7 @@ const AboutUsPage: React.FC<AboutUsPageProps> = ({ onGoHome }) => {
         <div className="bg-gray-50 min-h-screen pt-16">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 
-                {/* Header and Home Button */}
+                {/* Header */}
                 <header className="mb-10 flex justify-between items-center border-b pb-4">
                     <h1 className="text-5xl font-extrabold text-gray-900 tracking-tight">
                         Our Story
@@ -40,7 +40,7 @@ const AboutUsPage: React.FC<AboutUsPageProps> = ({ onGoHome }) => {
                     </button>
                 </header>
 
-                {/* --- Hero Section: The Festivora Vision --- */}
+                {/* Hero Section */}
                 <section className="relative overflow-hidden bg-gray-900 rounded-3xl shadow-2xl p-10 md:p-16 mb-20 transform transition duration-500 hover:shadow-yellow-500/50">
                     <div className="md:flex md:items-center">
                         <div className="md:w-2/3">
@@ -57,26 +57,24 @@ const AboutUsPage: React.FC<AboutUsPageProps> = ({ onGoHome }) => {
                                 Explore Our Products <ChevronRight className="w-5 h-5 ml-2"/>
                             </button>
                         </div>
+
                         <div className="md:w-1/3 mt-8 md:mt-0 md:pl-10">
-                            {/* Decorative element - simple animated light */}
-                            <div className="w-32 h-32 mx-auto bg-yellow-500 rounded-full shadow-2xl shadow-yellow-500/70 animate-pulse-slow">
-                            </div>
+                            <div className="w-32 h-32 mx-auto bg-yellow-500 rounded-full shadow-2xl shadow-yellow-500/70 animate-pulse-slow"></div>
                         </div>
                     </div>
                 </section>
 
-                {/* --- Mission and Values Section --- */}
+                {/* Mission & Values */}
                 <section className="mb-20">
                     <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center animate-fade-in">
                         Our Core Values
                     </h2>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        {missionValues.map((value, index) => (
+                        {missionValues.map((value, i) => (
                             <div 
-                                key={value.title} 
-                                // 💡 Animation: Slide-up on load with staggered delay
-                                className={`p-6 bg-white rounded-xl shadow-lg border-t-4 border-yellow-500 transform transition duration-500 hover:scale-[1.03] active:scale-[0.98] animate-slide-up`}
-                                style={{ animationDelay: `${index * 0.15}s` }}
+                                key={value.title}
+                                className="p-6 bg-white rounded-xl shadow-lg border-t-4 border-yellow-500 transform transition duration-500 hover:scale-[1.03] active:scale-[0.98] animate-slide-up"
+                                style={{ animationDelay: `${i * 0.15}s` }}
                             >
                                 <value.icon className={`w-10 h-10 mb-4 ${value.color}`} />
                                 <h3 className="text-xl font-semibold text-gray-900 mb-2">{value.title}</h3>
@@ -86,17 +84,16 @@ const AboutUsPage: React.FC<AboutUsPageProps> = ({ onGoHome }) => {
                     </div>
                 </section>
 
-                {/* --- Team Section --- */}
+                {/* Team Members Section */}
                 <section className="mb-20 bg-gray-100 p-10 rounded-2xl">
                     <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center animate-fade-in">
                         Meet the Innovators
                     </h2>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        {teamMembers.map((member, index) => (
+                        {teamMembers.map((member) => (
                             <div 
-                                key={member.name} 
-                                // 💡 Animation: Rotate slightly on hover
-                                className={`flex flex-col items-center text-center p-6 bg-white rounded-xl shadow-md transition duration-300 transform hover:rotate-1 hover:shadow-xl`}
+                                key={member.name}
+                                className="flex flex-col items-center text-center p-6 bg-white rounded-xl shadow-md transition duration-300 transform hover:rotate-1 hover:shadow-xl"
                             >
                                 <div className="w-24 h-24 bg-gray-200 rounded-full mb-4 flex items-center justify-center border-4 border-yellow-500">
                                     <member.icon className="w-12 h-12 text-gray-700"/>
@@ -109,7 +106,7 @@ const AboutUsPage: React.FC<AboutUsPageProps> = ({ onGoHome }) => {
                     </div>
                 </section>
 
-                {/* --- CTA Footer --- */}
+                {/* CTA Section */}
                 <section className="text-center bg-yellow-500 p-10 rounded-xl shadow-lg animate-bounce-slow">
                     <h2 className="text-3xl font-bold text-gray-900 mb-4">
                         Ready to Light Up Your World?
@@ -125,6 +122,6 @@ const AboutUsPage: React.FC<AboutUsPageProps> = ({ onGoHome }) => {
             </div>
         </div>
     );
-}
+};
 
 export default AboutUsPage;

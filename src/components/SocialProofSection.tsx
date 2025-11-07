@@ -1,6 +1,6 @@
 // File: src/components/SocialProofSection.tsx
 import React from 'react';
-import type { Review } from "../types"; // Make sure Review type is available
+import type { Review } from "../types/index"; // Make sure Review type is available
 
 interface SocialProofSectionProps {
     reviews: Review[];

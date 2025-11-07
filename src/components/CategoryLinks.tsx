@@ -1,46 +1,62 @@
-// File: src/components/CategoryLinks.tsx (Updated)
+// File: src/components/CategoryLinks.tsx (Final Polished Animated Version)
 
-import React from 'react';
+import React from "react";
+import { motion } from "framer-motion";
 
-// Define the categories (matching the type in App.tsx)
+// Define the categories (matching CategoryName type)
 type Category = {
-    name: 'Fairy' | 'Curtain' | 'Moon' | 'Outdoor' | 'All';
-    label: string;
-    icon: string; // Placeholder for icon URL or class
+  name: "Fairy" | "Curtain" | "Moon" | "Outdoor" | "All";
+  label: string;
+  icon: string;
 };
 
 const categories: Category[] = [
-    { name: 'Fairy', label: 'Fairy Lights', icon: '⭐' },
-    { name: 'Curtain', label: 'Curtain Lights', icon: '✨' },
-    { name: 'Moon', label: 'Moon Lamps', icon: '🌙' },
-    { name: 'Outdoor', label: 'Outdoor Lights', icon: '🌳' },
-    // Removed 'All' from here, as the Navbar handles viewing all
+  { name: "Fairy", label: "Fairy Lights", icon: "✨" },
+  { name: "Curtain", label: "Curtain Lights", icon: "💡" },
+  { name: "Moon", label: "Moon Lamps", icon: "🌙" },
+  { name: "Outdoor", label: "Outdoor Lights", icon: "🌳" },
+  { name: "All", label: "All Products", icon: "🛒" },
 ];
 
-// Define Props with the new handler
 interface CategoryLinksProps {
-    onCategoryClick: (category: Category['name']) => void; // 👈 NEW PROP
+  onCategoryClick: (category: Category["name"]) => void;
 }
 
 const CategoryLinks: React.FC<CategoryLinksProps> = ({ onCategoryClick }) => {
-    return (
-        <section className="container mx-auto px-4 py-8">
-            <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">Shop by Category</h2>
-            <div className="flex justify-center gap-6 flex-wrap">
-                {categories.map((cat) => (
-                    <button
-                        key={cat.name}
-                        // 👈 ON CLICK: Call the handler and pass the category name
-                        onClick={() => onCategoryClick(cat.name)}
-                        className="flex flex-col items-center p-4 bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 w-32 cursor-pointer border border-transparent hover:border-indigo-500"
-                    >
-                        <span className="text-4xl mb-2">{cat.icon}</span>
-                        <p className="text-sm font-semibold text-gray-700 text-center">{cat.label}</p>
-                    </button>
-                ))}
-            </div>
-        </section>
-    );
+  return (
+    <section className="relative py-16 bg-gradient-to-br from-yellow-50 via-white to-yellow-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 overflow-hidden">
+      {/* Decorative gradient circle */}
+      <div className="absolute top-0 left-0 w-72 h-72 bg-yellow-200 opacity-20 blur-3xl rounded-full -translate-x-20 -translate-y-20"></div>
+      <div className="absolute bottom-0 right-0 w-80 h-80 bg-yellow-400 opacity-10 blur-3xl rounded-full translate-x-20 translate-y-20"></div>
+
+      <div className="relative z-10 container mx-auto px-6">
+        <h2 className="text-4xl font-bold text-center text-gray-800 dark:text-gray-100 mb-12 border-b-4 border-yellow-400 inline-block pb-2">
+          Shop by Category
+        </h2>
+
+        <div className="flex justify-center flex-wrap gap-8">
+          {categories.map((cat, index) => (
+            <motion.button
+              key={cat.name}
+              onClick={() => onCategoryClick(cat.name)}
+              whileHover={{ scale: 1.07 }}
+              whileTap={{ scale: 0.96 }}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: index * 0.1 }}
+              viewport={{ once: true }}
+              className="flex flex-col items-center justify-center p-6 w-32 h-32 bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-transparent hover:border-yellow-500 hover:shadow-2xl transition-all duration-300 cursor-pointer"
+            >
+              <span className="text-5xl mb-3">{cat.icon}</span>
+              <p className="text-sm font-semibold text-gray-800 dark:text-gray-200 text-center">
+                {cat.label}
+              </p>
+            </motion.button>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
 };
 
 export default CategoryLinks;

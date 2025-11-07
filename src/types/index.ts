@@ -1,96 +1,55 @@
-// File: src/types/index.ts
+// ✅ CATEGORY TYPE (Matches UI + App.tsx Handling)
+export type CategoryName =
+  | "Fairy"
+  | "Curtain"
+  | "Moon"
+  | "Outdoor"
+  | "Star"
+  | "Video"
+  | "All";
 
-// File: src/types/index.ts (Updated)
+// ✅ THEME & LANGUAGE TYPES
+export type Theme = "light" | "dark";
+export type Language = "en" | "hi";
 
-export interface NavLink {
-    name: string;
-    href: string;
-}
-
-// 💡 Product Interface Update
-export interface Product {
-    id: number;
-    title: string;
-    desc: string;
-    // price: number; // Price removed as per request
-    
-    // 💡 New fields for dynamic content
-    images: string[]; // Array of image URLs for cycling
-    shortDesc: string; 
-    details: string; // Full description for Product View Page
-    rating: number; // Star rating
-    reviews: Review[]; // Reviews array
-    contact: {
-        whatsapp: "+91 96859 58831";
-        email: string;
-    }
-}
-
-// 💡 New Review Interface
+// ✅ REVIEW INTERFACE
 export interface Review {
-    id: number;
-    user: string;
-    comment: string;
-    rating: number;
-    date: string;
+  id: number;
+  user: string;
+  comment: string;
+  rating: number;
+  date: string;
 }
 
-// 💡 NEW: Video Product Type
-export interface VideoProduct {
-    id: number;
-    title: string;
-    subtitle: string;
-    price: number;
-    videoUrl: string;
-    posterUrl: string;
-    productLink: string;
-}
+// ✅ PRODUCT INTERFACE (Supports both Normal + Video Products)
+export interface Product {
+  id: number;
+  title: string;
+  desc: string;
+  images: string[];
 
-/* All Product Page */ 
-// File: src/types.ts
+  shortDesc: string;
+  details: string;
 
-// --- Basic Types ---
-export interface ContactInfo {
+  rating: number;
+  price: number;
+
+  reviews: Review[];
+  contact: {
     whatsapp: string;
     email: string;
+  };
+
+  category: CategoryName; // ✅ fully controlled
+
+  // ✅ Optional for video products
+  videoUrl?: string;
+  posterUrl?: string;
+  productLink?: string;
 }
 
-export interface Review {
-    id: number;
-    user: string;
-    comment: string;
-    rating: number; // 1 to 5
-    date: string; // ISO date string
-}
-
-// --- Product Type ---
-export interface Product {
-    id: number;
-    title: string;
-    desc: string;
-    images: string[];
-    shortDesc: string;
-    details: string;
-    rating: number;
-    price: number;
-    reviews: Review[];
-    contact: ContactInfo;
-}
-
-// --- Video Product Type (For Carousel) ---
-export interface VideoProduct {
-    id: number;
-    title: string;
-    subtitle: string;
-    price: number;
-    videoUrl: string;
-    posterUrl: string;
-    productLink: string;
-}
-
-// --- NavLink Type (For Navbar) ---
-export interface NavLink {
-    name: string;
-    href?: string;
-    isSpecial?: boolean; // For Home/Products links which use handlers
+// ✅ POLICY CONTENT TYPE (Used in GenericContentPage)
+export interface PolicyContent {
+  title: string;
+  content: string;
 }

@@ -1,7 +1,7 @@
 // File: src/pages/SearchPage.tsx (Performance & Filtering Setup)
 
 import React, { useState, useEffect, useMemo } from 'react'; // 💡 Added useMemo
-import type { Product } from '../types';
+import type { Product } from '../types/index';
 import ProductCard from '../components/ProductCard'; 
 import { Sliders, ArrowDownUp, ChevronRight, X } from 'lucide-react';
 
