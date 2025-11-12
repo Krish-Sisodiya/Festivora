@@ -1,4 +1,4 @@
-// File: src/components/AllProductsPage.tsx (FINAL CLEAN & PROFESSIONAL VERSION)
+// File: src/components/AllProductsPage.tsx (✨ Navbar Overlap Fixed + Premium Version)
 import React, { useState, useMemo } from "react";
 import {
   Grid,
@@ -11,7 +11,8 @@ import {
   TrendingUp,
   ArrowDown,
 } from "lucide-react";
-import type { Product } from "../types/index"; // ✅ Unified Product type from main types file
+import { motion } from "framer-motion";
+import type { Product } from "../types/index";
 
 interface AllProductsPageProps {
   products: Product[];
@@ -20,12 +21,7 @@ interface AllProductsPageProps {
   onGoHome: () => void;
 }
 
-type SortOption =
-  | "default"
-  | "title_asc"
-  | "title_desc"
-  | "rating_desc"
-  | "rating_asc";
+type SortOption = "default" | "title_asc" | "title_desc" | "rating_desc" | "rating_asc";
 
 const AllProductsPage: React.FC<AllProductsPageProps> = ({
   products,
@@ -38,15 +34,9 @@ const AllProductsPage: React.FC<AllProductsPageProps> = ({
   const [sortOption, setSortOption] = useState<SortOption>("default");
   const [isGridView, setIsGridView] = useState(true);
 
-  const categories = [
-    "All",
-    "Fairy Lights",
-    "Curtain Lights",
-    "Outdoor",
-    "Star",
-  ];
+  const categories = ["All", "Fairy Lights", "Curtain Lights", "Outdoor", "Star"];
 
-  // ✅ Filtering + Sorting Logic (Memoized)
+  // ✅ Filter + Sort Logic
   const filteredAndSortedProducts = useMemo(() => {
     let currentProducts = products.filter(
       (p) =>
@@ -61,7 +51,6 @@ const AllProductsPage: React.FC<AllProductsPageProps> = ({
         Outdoor: "Outdoor|Patio",
         Star: "Star",
       };
-
       const keyword = keywordMap[selectedCategory] || selectedCategory;
       const regex = new RegExp(keyword, "i");
       currentProducts = currentProducts.filter(
@@ -71,131 +60,125 @@ const AllProductsPage: React.FC<AllProductsPageProps> = ({
 
     switch (sortOption) {
       case "title_asc":
-        currentProducts = [...currentProducts].sort((a, b) =>
-          a.title.localeCompare(b.title)
-        );
-        break;
+        return [...currentProducts].sort((a, b) => a.title.localeCompare(b.title));
       case "title_desc":
-        currentProducts = [...currentProducts].sort((a, b) =>
-          b.title.localeCompare(a.title)
-        );
-        break;
+        return [...currentProducts].sort((a, b) => b.title.localeCompare(a.title));
       case "rating_desc":
-        currentProducts = [...currentProducts].sort(
-          (a, b) => b.rating - a.rating
-        );
-        break;
+        return [...currentProducts].sort((a, b) => b.rating - a.rating);
       case "rating_asc":
-        currentProducts = [...currentProducts].sort(
-          (a, b) => a.rating - b.rating
-        );
-        break;
+        return [...currentProducts].sort((a, b) => a.rating - b.rating);
       default:
-        break;
+        return currentProducts;
     }
-
-    return currentProducts;
   }, [products, searchTerm, selectedCategory, sortOption]);
 
-  // ✅ Product Card Component
+  // ✅ Product Card
   const ProductCard: React.FC<{ product: Product; isList: boolean }> = ({
     product,
     isList,
   }) => (
-    <div
+    <motion.div
+      whileHover={{ scale: 1.03 }}
+      transition={{ duration: 0.3 }}
       onClick={() => onViewProduct(product)}
-      className={`bg-white border border-gray-100 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.99] overflow-hidden cursor-pointer ${
-        isList ? "flex flex-row space-x-4 p-4" : "flex flex-col"
-      }`}
+      className={`bg-white dark:bg-gray-900/90 border border-yellow-100 dark:border-gray-700 rounded-xl shadow-lg 
+        hover:shadow-[0_0_25px_rgba(255,215,0,0.3)] transition-all duration-300 cursor-pointer overflow-hidden
+        ${isList ? "flex flex-row space-x-4 p-4" : "flex flex-col"}`}
     >
       <img
         src={product.images[0]}
         alt={product.title}
         className={`object-cover rounded-lg ${
-          isList ? "w-32 h-32 flex-shrink-0" : "w-full h-52"
-        } transition-opacity duration-300 hover:opacity-90`}
+          isList ? "w-32 h-32 flex-shrink-0" : "w-full h-56"
+        } transition-all duration-500 hover:opacity-90`}
       />
 
-      <div
-        className={`flex-grow flex flex-col justify-between ${
-          isList ? "py-1" : "p-4"
-        }`}
-      >
+      <div className={`flex-grow flex flex-col justify-between ${isList ? "py-1" : "p-4"}`}>
         <div>
           <h3
-            className={`font-extrabold text-yellow-800 ${
+            className={`font-extrabold bg-gradient-to-r from-yellow-500 to-yellow-700 bg-clip-text text-transparent ${
               isList ? "text-xl" : "text-2xl"
             } mb-1`}
           >
             {product.title}
           </h3>
           <p
-            className={`text-gray-500 mb-3 ${
+            className={`text-gray-500 dark:text-gray-400 ${
               isList ? "text-sm" : "text-base"
-            }`}
+            } mb-3`}
           >
             {isList ? product.shortDesc : product.desc}
           </p>
         </div>
 
-        <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3 mt-3">
+        <div className="flex flex-col sm:flex-row gap-2 mt-3">
           <button
             onClick={(e) => {
               e.stopPropagation();
               onAddToCart(product);
             }}
-            className="w-full sm:w-auto py-3 px-6 bg-yellow-600 text-white font-bold rounded-lg shadow-md hover:bg-yellow-700 transition-all duration-200 text-sm flex items-center justify-center"
+            className="flex items-center justify-center py-3 px-5 w-full sm:w-auto bg-gradient-to-r from-yellow-500 to-yellow-600 
+                      text-white font-bold rounded-lg shadow-md hover:shadow-[0_0_20px_rgba(255,215,0,0.5)] active:scale-95"
           >
-            <ShoppingCart className="w-5 h-5 mr-2" /> Send Enquiry
+            <ShoppingCart className="w-5 h-5 mr-2" /> Enquiry
           </button>
-
           <button
             onClick={(e) => {
               e.stopPropagation();
               onViewProduct(product);
             }}
-            className="w-full sm:w-auto py-3 px-4 bg-gray-100 text-yellow-700 border border-gray-300 font-medium rounded-lg hover:bg-gray-200 transition text-sm"
+            className="py-3 px-4 w-full sm:w-auto bg-gray-100 dark:bg-gray-800 text-yellow-700 dark:text-yellow-400 
+                      border border-gray-300 dark:border-gray-700 rounded-lg hover:bg-yellow-50 dark:hover:bg-gray-700 transition"
           >
             View Details
           </button>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 bg-gray-50 min-h-[100vh]">
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-10 bg-gradient-to-br from-yellow-50 via-white to-yellow-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 min-h-[100vh] transition-colors">
       {/* --- Header --- */}
-      <header className="mb-10 flex flex-col md:flex-row justify-between items-center border-b pb-4 border-yellow-200">
-        <h1 className="text-4xl md:text-5xl font-extrabold text-yellow-800 flex items-center mb-4 md:mb-0">
-          <TrendingUp className="w-9 h-9 mr-3 text-yellow-600" /> Explore Our
-          Collection
+      <motion.header
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        className="relative z-30 mb-10 flex flex-col md:flex-row justify-between items-center border-b border-yellow-400/50 pb-4 bg-white/70 dark:bg-gray-900/60 backdrop-blur-md rounded-xl shadow-[0_2px_25px_rgba(255,215,0,0.15)]"
+      >
+        <h1 className="text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent flex items-center mb-4 md:mb-0">
+          <TrendingUp className="w-9 h-9 mr-3 text-yellow-600" /> Explore Our Collection
         </h1>
         <button
           onClick={onGoHome}
-          className="flex items-center text-gray-600 hover:text-yellow-700 transition font-medium p-2 rounded-lg bg-white shadow-sm hover:shadow-md"
+          className="flex items-center gap-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-200 hover:text-yellow-600 dark:hover:text-yellow-400 px-4 py-2 rounded-lg shadow hover:shadow-md transition"
         >
-          <Home className="w-5 h-5 mr-1" /> Back to Home
+          <Home className="w-5 h-5" /> Back to Home
         </button>
-      </header>
+      </motion.header>
 
       {/* --- Filters --- */}
-      <div className="sticky top-0 z-30 bg-white p-4 rounded-xl shadow-xl mb-8 border-t-4 border-yellow-500">
-        <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-          {/* Search */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+        className="sticky top-20 z-20 bg-white/90 dark:bg-gray-900/90 backdrop-blur-lg p-5 rounded-xl shadow-lg mb-10 border-l-4 border-yellow-500"
+      >
+        <div className="flex flex-col md:flex-row justify-between items-center gap-5">
+          {/* Search Bar */}
           <div className="relative w-full md:w-1/3">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
             <input
               type="text"
-              placeholder="Search by title or keyword..."
+              placeholder="Search by product name..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full p-3 pl-10 border border-gray-300 rounded-lg focus:ring-yellow-500 focus:border-yellow-500 text-base"
+              className="w-full p-3 pl-10 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-yellow-500 outline-none"
             />
             {searchTerm && (
               <button
                 onClick={() => setSearchTerm("")}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-800"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-red-500"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -203,13 +186,13 @@ const AllProductsPage: React.FC<AllProductsPageProps> = ({
           </div>
 
           {/* Category & Sort */}
-          <div className="flex space-x-4 w-full md:w-2/3 justify-end">
+          <div className="flex w-full md:w-2/3 justify-end gap-4">
             {/* Category */}
             <div className="relative w-1/2">
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="w-full p-3 border border-gray-300 rounded-lg appearance-none bg-white focus:ring-yellow-500 focus:border-yellow-500 font-medium pr-8"
+                className="w-full p-3 pr-8 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-yellow-500 appearance-none"
               >
                 <option value="All">All Categories</option>
                 {categories.slice(1).map((cat) => (
@@ -218,7 +201,7 @@ const AllProductsPage: React.FC<AllProductsPageProps> = ({
                   </option>
                 ))}
               </select>
-              <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" />
+              <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" />
             </div>
 
             {/* Sort */}
@@ -226,7 +209,7 @@ const AllProductsPage: React.FC<AllProductsPageProps> = ({
               <select
                 value={sortOption}
                 onChange={(e) => setSortOption(e.target.value as SortOption)}
-                className="w-full p-3 border border-gray-300 rounded-lg appearance-none bg-white focus:ring-yellow-500 focus:border-yellow-500 font-medium pr-8"
+                className="w-full p-3 pr-8 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-yellow-500 appearance-none"
               >
                 <option value="default">Sort By: Default</option>
                 <option value="title_asc">Name: A-Z</option>
@@ -234,27 +217,26 @@ const AllProductsPage: React.FC<AllProductsPageProps> = ({
                 <option value="rating_desc">Rating: High to Low</option>
                 <option value="rating_asc">Rating: Low to High</option>
               </select>
-              <ArrowDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" />
+              <ArrowDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" />
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
 
-      {/* --- Product Grid/List --- */}
+      {/* --- Grid/List Toggle --- */}
       <div className="flex justify-between items-center mb-6">
-        <p className="text-gray-700 font-semibold text-lg">
+        <p className="text-gray-700 dark:text-gray-300 font-semibold text-lg">
           Showing {filteredAndSortedProducts.length} Products
         </p>
 
-        <div className="flex space-x-2 p-1 bg-white border border-gray-200 rounded-lg shadow-inner">
+        <div className="flex gap-2 bg-white dark:bg-gray-800 p-1 border border-gray-200 dark:border-gray-700 rounded-lg shadow-inner">
           <button
             onClick={() => setIsGridView(true)}
             className={`p-2 rounded-md transition ${
               isGridView
                 ? "bg-yellow-500 text-white shadow-md"
-                : "text-gray-500 hover:bg-gray-100"
+                : "text-gray-500 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
             }`}
-            title="Grid View"
           >
             <Grid className="w-5 h-5" />
           </button>
@@ -263,37 +245,45 @@ const AllProductsPage: React.FC<AllProductsPageProps> = ({
             className={`p-2 rounded-md transition ${
               !isGridView
                 ? "bg-yellow-500 text-white shadow-md"
-                : "text-gray-500 hover:bg-gray-100"
+                : "text-gray-500 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
             }`}
-            title="List View"
           >
             <List className="w-5 h-5" />
           </button>
         </div>
       </div>
 
+      {/* --- Product Grid/List --- */}
       {filteredAndSortedProducts.length > 0 ? (
-        <div
+        <motion.div
+          layout
           className={
             isGridView
               ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
               : "space-y-6"
           }
         >
-          {filteredAndSortedProducts.map((product) => (
-            <ProductCard
+          {filteredAndSortedProducts.map((product, index) => (
+            <motion.div
               key={product.id}
-              product={product}
-              isList={!isGridView}
-            />
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: index * 0.05 }}
+            >
+              <ProductCard product={product} isList={!isGridView} />
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       ) : (
-        <div className="text-center p-16 bg-white rounded-xl shadow-2xl mt-12 border-2 border-yellow-300">
-          <p className="text-3xl font-bold text-gray-800 mb-4">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="text-center p-16 bg-white dark:bg-gray-900 rounded-xl shadow-2xl mt-12 border-2 border-yellow-400"
+        >
+          <p className="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-3">
             No Matches Found!
           </p>
-          <p className="text-lg text-gray-600">
+          <p className="text-lg text-gray-600 dark:text-gray-400 mb-5">
             Please clear your filters or try a different search term.
           </p>
           <button
@@ -302,13 +292,13 @@ const AllProductsPage: React.FC<AllProductsPageProps> = ({
               setSelectedCategory("All");
               setSortOption("default");
             }}
-            className="mt-6 bg-yellow-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-yellow-700 transition shadow-lg active:scale-95"
+            className="bg-yellow-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-yellow-700 transition shadow-lg active:scale-95"
           >
             Clear Filters
           </button>
-        </div>
+        </motion.div>
       )}
-    </div>
+    </section>
   );
 };
 

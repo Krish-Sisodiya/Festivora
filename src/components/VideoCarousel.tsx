@@ -1,8 +1,7 @@
-// File: src/components/VideoCarousel.tsx (FINAL FIXED)
+// File: src/components/VideoCarousel.tsx (UPDATED for 10 Cards ✅)
 import React from "react";
 import { Play } from "lucide-react";
-import type { Product } from "../types/index"; // ✅ Use unified type
- // ✅ Use unified type
+import type { Product } from "../types/index";
 
 interface VideoCarouselProps {
   products: Product[];
@@ -10,29 +9,33 @@ interface VideoCarouselProps {
 }
 
 const VideoCarousel: React.FC<VideoCarouselProps> = ({ products, onViewVideo }) => {
-  const videoProducts = products.filter((p) => p.videoUrl);
+  // ✅ Filter only video products
+  const videoProducts = products.filter((p) => p.videoUrl).slice(0, 10); // 👈 Limit to 10
 
   if (videoProducts.length === 0) return null;
 
   return (
-    <section className="py-12 bg-white border-t border-gray-200 dark:bg-gray-900 dark:border-gray-700">
-      <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-yellow-400 mb-10 border-b-2 border-yellow-500 inline-block px-4 pb-2">
+    <section className="py-16 bg-gray-50 border-t border-gray-200 dark:bg-gray-900 dark:border-gray-700">
+      <div className="max-w-7xl mx-auto px-6">
+        {/* Section Heading */}
+        <h2 className="text-4xl font-extrabold text-center text-yellow-700 mb-10 border-b-4 border-yellow-500 inline-block px-4 pb-2">
           Product Video Showcase
         </h2>
 
+        {/* Scrollable Cards */}
         <div className="flex overflow-x-auto space-x-6 pb-6 scrollbar-hide">
           {videoProducts.map((product) => (
             <div
               key={product.id}
-              className="flex-shrink-0 w-80 p-3 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-xl transition duration-300 transform hover:scale-[1.01] hover:border-yellow-500 cursor-pointer"
+              className="flex-shrink-0 w-80 bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 hover:shadow-2xl transition transform hover:scale-[1.03] cursor-pointer"
               onClick={() => onViewVideo(product)}
             >
-              <div className="relative h-48 overflow-hidden rounded-lg group">
+              {/* Video Preview */}
+              <div className="relative h-48 overflow-hidden rounded-t-2xl group">
                 <video
                   src={product.videoUrl}
                   poster={product.posterUrl}
-                  className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-90"
+                  className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-80"
                   autoPlay
                   loop
                   muted
@@ -43,23 +46,25 @@ const VideoCarousel: React.FC<VideoCarouselProps> = ({ products, onViewVideo }) 
                 </video>
 
                 {/* Overlay */}
-                <div className="absolute inset-0 bg-black bg-opacity-40 flex flex-col justify-end p-3 transition duration-300 group-hover:bg-opacity-20 pointer-events-none">
-                  <span className="text-base font-extrabold text-white leading-tight">
+                <div className="absolute inset-0 bg-black bg-opacity-40 group-hover:bg-opacity-20 transition duration-300 flex flex-col justify-end p-3">
+                  <span className="text-base font-bold text-white leading-tight truncate">
                     {product.title}
                   </span>
                 </div>
 
-                <div className="absolute inset-0 flex items-center justify-center transition duration-300 opacity-0 group-hover:opacity-100">
-                  <Play className="w-12 h-12 text-yellow-400 fill-yellow-400 drop-shadow-lg" />
+                {/* Play Button Hover Effect */}
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300">
+                  <Play className="w-14 h-14 text-yellow-400 fill-yellow-400 drop-shadow-lg" />
                 </div>
               </div>
 
-              <div className="p-2 pt-3">
-                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-200 mb-1 truncate">
+              {/* Card Body */}
+              <div className="p-4">
+                <h3 className="text-lg font-extrabold text-gray-900 dark:text-gray-200 mb-1 truncate">
                   {product.title}
                 </h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400 font-medium mb-3 truncate">
-                  {product.shortDesc}
+                  {product.shortDesc || "Watch the full demo"}
                 </p>
 
                 <button
@@ -67,14 +72,19 @@ const VideoCarousel: React.FC<VideoCarouselProps> = ({ products, onViewVideo }) 
                     e.stopPropagation();
                     onViewVideo(product);
                   }}
-                  className="w-full bg-yellow-600 text-white py-2 rounded-lg font-semibold text-sm hover:bg-yellow-700 transition shadow-md"
+                  className="w-full bg-yellow-600 text-white py-2 rounded-lg font-semibold text-sm hover:bg-yellow-700 transition-all shadow-md active:scale-95"
                 >
-                  Watch Full Video
+                  ▶ Watch Full Video
                 </button>
               </div>
             </div>
           ))}
         </div>
+
+        {/* Scroll hint (optional) */}
+        <p className="text-center text-gray-500 mt-4 text-sm">
+          Swipe → to explore all demo videos
+        </p>
       </div>
     </section>
   );
